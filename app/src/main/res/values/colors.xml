@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="publictitlecolor">#9CC813</color>
     <color name="grayctitlecolor">#808080</color>
+    <color name="black">#000</color>
+    <color name="purple">#e040fb</color>
+    <color name="opacity_3_white">#fff</color>
 </resources>

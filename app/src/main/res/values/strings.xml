@@ -8,5 +8,12 @@
     <string name="getpermission">由于华为部分手机权限问题，为保证程序正常运行，需要接下来的权限,请同意，禁止后可能会造成程序崩溃。</string>
     <string name="ok">OK</string>
     <string name="hint">提示</string>
+    <string name="subscribeDesign">预约报价</string>
+    <string name="inputYourName">请输入您的姓名</string>
+    <string name="inputArea">请输入房屋面积</string>
+    <string name="inputPhoneNum">请输入手机号码</string>
+    <string name="designImme">立即预约设计</string>
+    <string name="newHouse">新房</string>
+    <string name="oldHouse">旧房</string>
 </resources>
 
