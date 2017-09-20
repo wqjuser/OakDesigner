@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="wqj.com.oakdesigner">
-    <!--网络权限-->
+
+    <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--读取内存卡权限-->
+    <!-- 读取内存卡权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!--打电话-->
+    <!-- 打电话 -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <!--读取手机通话状态-->
+    <!-- 读取手机通话状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:name=".application.MyApplication"
         android:allowBackup="true"
@@ -24,6 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.others.TestActivity"></activity>
     </application>
 
 </manifest>

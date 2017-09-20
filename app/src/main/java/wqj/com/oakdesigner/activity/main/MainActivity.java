@@ -42,6 +42,12 @@ import wqj.com.oakdesigner.utils.RequestCode;
 import wqj.com.oakdesigner.utils.StatusBarCompat;
 import wqj.com.oakdesigner.utils.XPermissionUtils;
 
+/**
+ * Created by WQJ on 2017/7/20
+ * Descripyion:主界面
+ * Version: 1
+ * Modify Person :
+ */
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.title_back_layout)
@@ -62,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     List titles = new ArrayList();
     private int isFirst = 0;
     private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

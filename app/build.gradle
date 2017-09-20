@@ -24,33 +24,33 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    //谷歌Gson
+    //okgo框架必须使用
+    //    网络访问请求
+    //    轻便开发框架
+    //    轮播图框架
+    //    fresco图片加载框架
+    // 在 API < 14 上的机器支持 WebP 时，需要添加
+    // 支持 GIF 动图，需要添加
+    // 支持 WebP （静态图+动图），需要添加
+    //    彩色dialog
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
-    //谷歌Gson
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.readystatesoftware.chuck:library:1.1.0'
-    //okgo框架必须使用
     compile 'com.lzy.net:okgo:3.0.4'
     compile 'com.lzy.net:okrx2:2.0.2'
     compile 'com.lzy.net:okserver:2.0.5'
-    //    网络访问请求
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
-    //    轻便开发框架
     compile 'com.youth.xframe:xframe:1.1.0'
-    //    轮播图框架
     compile 'com.youth.banner:banner:1.4.9'
-    //    fresco图片加载框架
     compile 'com.facebook.fresco:fresco:0.12.0'
-    // 在 API < 14 上的机器支持 WebP 时，需要添加
     compile 'com.facebook.fresco:animated-base-support:0.12.0'
-    // 支持 GIF 动图，需要添加
     compile 'com.facebook.fresco:animated-gif:0.12.0'
-    // 支持 WebP （静态图+动图），需要添加
     compile 'com.facebook.fresco:animated-webp:0.12.0'
     compile 'com.facebook.fresco:webpsupport:0.12.0'
-    //    彩色dialog
     compile 'com.github.andyxialm:ColorDialog:1.0.0'
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.jakewharton:butterknife-compiler:8.8.1'
+    testCompile 'junit:junit:4.12'
 }
