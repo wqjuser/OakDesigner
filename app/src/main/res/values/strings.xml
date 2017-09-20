@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">橡墅设计</string>
+    <string name="reminder">提示</string>
+    <string name="callPhone">将要直接拨打客服电话18038098825，是否同意？</string>
+    <string name="confirm">是</string>
+    <string name="cancle">否</string>
+    <string name="info">注意</string>
+    <string name="getpermission">由于华为部分手机权限问题，为保证程序正常运行，需要接下来的权限,请同意，禁止后可能会造成程序崩溃。</string>
+    <string name="ok">OK</string>
+    <string name="hint">提示</string>
+</resources>
+
