@@ -1,8 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="wqj.com.oakdesigner.activity.others.TestActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="wqj.com.oakdesigner.activity.others.TestActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <include layout="@layout/publictitle"/>
+
+    <View
+        android:layout_width="@dimen/dp60"
+        android:layout_height="@dimen/dp60"
+        android:layout_gravity="center"
+        android:background="@color/chuck_colorPrimary"/>
+
+    <View
+        android:layout_width="@dimen/dp60"
+        android:layout_height="@dimen/dp60"
+        android:layout_gravity="center"
+        android:background="@color/chuck_colorAccent"/>
+
+    <View
+        android:layout_width="@dimen/dp60"
+        android:layout_height="@dimen/dp60"
+        android:layout_gravity="center"
+        android:background="@color/chuck_colorPrimaryDark"/>
+
+    <View
+        android:layout_width="@dimen/dp60"
+        android:layout_height="@dimen/dp60"
+        android:layout_gravity="center"
+        android:background="@color/chuck_status_default"/>
+</LinearLayout>

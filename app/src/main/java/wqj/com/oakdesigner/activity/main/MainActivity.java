@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,6 +37,8 @@ import butterknife.OnClick;
 import cn.refactor.lib.colordialog.ColorDialog;
 import cn.refactor.lib.colordialog.PromptDialog;
 import wqj.com.oakdesigner.R;
+import wqj.com.oakdesigner.activity.others.TestActivity;
+import wqj.com.oakdesigner.utils.Animation;
 import wqj.com.oakdesigner.utils.Constant;
 import wqj.com.oakdesigner.utils.FrescoImageLoader;
 import wqj.com.oakdesigner.utils.RequestCode;
@@ -74,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        getBanner();
+        initView();
+        getPermissions();
     }
 
     public void getPermissions() {
@@ -144,65 +150,39 @@ public class MainActivity extends AppCompatActivity {
         banner.stopAutoPlay();
     }
 
-    @OnClick(R.id.title_name_right)
-    public void onViewClicked() {
-        ColorDialog colorDialog = new ColorDialog(this);
-        colorDialog.setContentText(getString(R.string.callPhone));
-        colorDialog.setTitle(getString(R.string.reminder));
-        colorDialog.setPositiveListener(getString(R.string.confirm), new ColorDialog.OnPositiveListener() {
-            @Override
-            public void onClick(ColorDialog colorDialog) {
-                colorDialog.dismiss();
-                Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:18038098825"));
-                checkPermission(Manifest.permission.CALL_PHONE, 1, 1);
+    @OnClick({R.id.title_back_layout, R.id.img_ad, R.id.title_name_right})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.title_back_layout:
+                break;
+            case R.id.img_ad:
+                Intent intent = new Intent(MainActivity.this, TestActivity.class);
                 startActivity(intent);
-            }
-        });
-        colorDialog.setNegativeListener(getString(R.string.cancle), new ColorDialog.OnNegativeListener() {
-            @Override
-            public void onClick(ColorDialog colorDialog) {
-                colorDialog.dismiss();
-            }
-        });
-        colorDialog.show();
-    }
-
-    /**
-     * 监听状态, 重启app
-     *
-     * @author lance
-     */
-    private class PhoneCallListener extends PhoneStateListener {
-        private final String LOG_TAG = "test";
-        private boolean isPhoneCalling = false;
-
-        public void onCallStateChanged(int state, String incomingNumber) {
-            if (TelephonyManager.CALL_STATE_RINGING == state) {
-                Log.i(LOG_TAG, "正在呼叫: " + incomingNumber);
-            }
-
-            if (TelephonyManager.CALL_STATE_OFFHOOK == state) {
-                Log.i(LOG_TAG, "OFFHOOK");
-                isPhoneCalling = true;
-            }
-
-            if (TelephonyManager.CALL_STATE_IDLE == state) {
-                Log.i(LOG_TAG, "Idle");
-
-                if (isPhoneCalling) {
-                    Log.i(LOG_TAG, "restart app");
-                    Intent intent = getBaseContext()
-                            .getPackageManager()
-                            .getLaunchIntentForPackage(getBaseContext().getPackageName())
-                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                    startActivity(intent);
-                    isPhoneCalling = false;
-                }
-            }
+                overridePendingTransition(Animation.abc_slide_in_top, Animation.abc_slide_in_top);
+                break;
+            case R.id.title_name_right:
+                ColorDialog colorDialog = new ColorDialog(this);
+                colorDialog.setContentText(getString(R.string.callPhone));
+                colorDialog.setTitle(getString(R.string.reminder));
+                colorDialog.setPositiveListener(getString(R.string.confirm), new ColorDialog.OnPositiveListener() {
+                    @Override
+                    public void onClick(ColorDialog colorDialog) {
+                        colorDialog.dismiss();
+                        Intent intent = new Intent(Intent.ACTION_CALL);
+                        intent.setData(Uri.parse("tel:18038098825"));
+                        checkPermission(Manifest.permission.CALL_PHONE, 1, 1);
+                        startActivity(intent);
+                    }
+                });
+                colorDialog.setNegativeListener(getString(R.string.cancle), new ColorDialog.OnNegativeListener() {
+                    @Override
+                    public void onClick(ColorDialog colorDialog) {
+                        colorDialog.dismiss();
+                    }
+                });
+                colorDialog.show();
+                break;
         }
-
     }
 
     public void showDialog() {
@@ -224,18 +204,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getPermission() {
-        XPermissionUtils.requestPermissions(this, RequestCode.EXTERNAL, new String[]{
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_PHONE_STATE}, new XPermissionUtils.OnPermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-            }
+        if (Build.VERSION.SDK_INT >= 23) {
+            XPermissionUtils.requestPermissions(this, RequestCode.EXTERNAL, new String[]{
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_PHONE_STATE}, new XPermissionUtils.OnPermissionListener() {
+                @Override
+                public void onPermissionGranted() {
+                }
 
-            @Override
-            public void onPermissionDenied() {
-            }
+                @Override
+                public void onPermissionDenied() {
+                }
 
-        });
+            });
+        }
+
     }
 
     public void getBanner() {
@@ -276,5 +259,42 @@ public class MainActivity extends AppCompatActivity {
                         super.onError(response);
                     }
                 });
+    }
+
+    /**
+     * 监听状态, 重启app
+     *
+     * @author lance
+     */
+    private class PhoneCallListener extends PhoneStateListener {
+        private final String LOG_TAG = "test";
+        private boolean isPhoneCalling = false;
+
+        public void onCallStateChanged(int state, String incomingNumber) {
+            if (TelephonyManager.CALL_STATE_RINGING == state) {
+                Log.i(LOG_TAG, "正在呼叫: " + incomingNumber);
+            }
+
+            if (TelephonyManager.CALL_STATE_OFFHOOK == state) {
+                Log.i(LOG_TAG, "OFFHOOK");
+                isPhoneCalling = true;
+            }
+
+            if (TelephonyManager.CALL_STATE_IDLE == state) {
+                Log.i(LOG_TAG, "Idle");
+
+                if (isPhoneCalling) {
+                    Log.i(LOG_TAG, "restart app");
+                    Intent intent = getBaseContext()
+                            .getPackageManager()
+                            .getLaunchIntentForPackage(getBaseContext().getPackageName())
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    startActivity(intent);
+                    isPhoneCalling = false;
+                }
+            }
+        }
+
     }
 }

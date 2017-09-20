@@ -27,9 +27,10 @@ import java.lang.reflect.Type;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import wqj.com.oakdesign.response.LzyResponse;
-import wqj.com.oakdesign.response.SimpleResponse;
-import wqj.com.oakdesign.utils.Convert;
+import wqj.com.oakdesigner.response.LzyResponse;
+import wqj.com.oakdesigner.response.SimpleResponse;
+import wqj.com.oakdesigner.utils.Convert;
+
 
 /**
  * ================================================
