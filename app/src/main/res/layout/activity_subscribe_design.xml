@@ -1,94 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.gw.swipeback.SwipeBackLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeBackLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg1"
-    android:orientation="vertical"
+    app:directionMode="left"
+    app:isSwipeFromEdge="true"
+    app:maskAlpha="125"
+    app:swipeBackFactor="0.5"
     tools:context="wqj.com.oakdesigner.activity.main.SubscribeDesignActivity">
 
-    <com.coorchice.library.SuperTextView
-        android:id="@+id/superTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dp25"
-        android:gravity="center"
-        android:text="@string/subscribeDesign"
-        android:textColor="#DFE166"
-        android:textSize="@dimen/sp28"
-        app:autoAdjust="true"
-        app:corner="25dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_name"
-        android:layout_width="260dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/shape_white"
-        android:hint="@string/inputYourName"/>
-
-    <EditText
-        android:id="@+id/et_area"
-        android:layout_width="260dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/shape_white"
-        android:hint="@string/inputArea"/>
-
-    <RelativeLayout
-        android:layout_width="260dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/shape_white"
-        android:orientation="horizontal">
-
-        <CheckBox
-            android:id="@+id/checkbox_new"
-            style="@style/CustomCheckboxTheme"
+        <com.coorchice.library.SuperTextView
+            android:id="@+id/superTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="40dp"
-            android:checked="true"
-            android:paddingEnd="@dimen/dp6"
-            android:paddingStart="@dimen/dp6"
-            android:text="@string/newHouse"
-            android:textSize="16sp"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="@string/subscribeDesign"
+            android:textColor="#DFE166"
+            android:textSize="@dimen/sp28"
+            app:autoAdjust="true"
+            app:corner="25dp"/>
 
-        <CheckBox
-            android:id="@+id/checkbox_old"
-            style="@style/CustomCheckboxTheme"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="40dp"
-            android:paddingEnd="@dimen/dp6"
-            android:paddingStart="@dimen/dp6"
-            android:text="@string/oldHouse"
-            android:textSize="16sp"/>
-    </RelativeLayout>
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/shape_white"
+            android:hint="@string/inputYourName"/>
 
-    <EditText
-        android:id="@+id/et_phone"
-        android:layout_width="260dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/shape_white"
-        android:hint="@string/inputPhoneNum"
-        android:inputType="phone"/>
+        <EditText
+            android:id="@+id/et_area"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/shape_white"
+            android:hint="@string/inputArea"/>
 
-    <Button
-        android:layout_width="260dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/shape_green"
-        android:text="@string/designImme"/>
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/shape_white"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkbox_new"
+                style="@style/CustomCheckboxTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="40dp"
+                android:checked="true"
+                android:paddingEnd="@dimen/dp6"
+                android:paddingStart="@dimen/dp6"
+                android:text="@string/newHouse"
+                android:textSize="16sp"/>
+
+            <CheckBox
+                android:id="@+id/checkbox_old"
+                style="@style/CustomCheckboxTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="40dp"
+                android:paddingEnd="@dimen/dp6"
+                android:paddingStart="@dimen/dp6"
+                android:text="@string/oldHouse"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/shape_white"
+            android:hint="@string/inputPhoneNum"
+            android:inputType="phone"/>
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/shape_green"
+            android:text="@string/designImme"/>
+    </LinearLayout>
+</com.gw.swipeback.SwipeBackLayout>

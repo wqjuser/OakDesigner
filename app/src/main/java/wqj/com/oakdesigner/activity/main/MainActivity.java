@@ -12,6 +12,8 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -71,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
     List titles = new ArrayList();
     private int isFirst = 0;
     private SharedPreferences sharedPreferences;
+    private ImageView imgBook, imgDelete;
+    private FrameLayout mFrameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getPermissions() {
+        imgBook = (ImageView) findViewById(R.id.img_book);
+        imgDelete = (ImageView) findViewById(R.id.img_delete);
+        mFrameLayout = (FrameLayout) findViewById(R.id.frame);
         sharedPreferences = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
         isFirst = sharedPreferences.getInt("isFirst", isFirst);
         if (Build.MANUFACTURER.equals("HUAWEI")) {//判断首次登陆并且是华为手机，进行权限授予
@@ -93,13 +100,42 @@ public class MainActivity extends AppCompatActivity {
         } else {
             getPermission();
         }
+        imgBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SubscribeDesignActivity.class);
+                startActivity(intent);
+            }
+        });
+        imgDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFrameLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void bannerOnclick() {
         banner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
-
+                switch (position) {
+                    case 0:
+                        Uri uri = Uri.parse("http://www.sz-oak.com/theme/marriage/index.html");
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        Uri uri1 = Uri.parse("http://www.sz-oak.com/wap.php?action=article&id=236");
+                        Intent intent1 = new Intent(Intent.ACTION_VIEW, uri1);
+                        startActivity(intent1);
+                        break;
+                    case 2:
+                        Uri uri2 = Uri.parse("http://www.sz-oak.com/theme/children/index.html");
+                        Intent intent2 = new Intent(Intent.ACTION_VIEW, uri2);
+                        startActivity(intent2);
+                        break;
+                }
             }
         });
     }
