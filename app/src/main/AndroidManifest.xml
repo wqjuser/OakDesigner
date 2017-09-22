@@ -29,6 +29,8 @@
         <activity android:name=".activity.others.TestActivity"/>
         <activity android:name=".activity.main.SubscribeDesignActivity">
         </activity>
+        <activity android:name=".forum.ForumActivity">
+        </activity>
     </application>
 
 </manifest>

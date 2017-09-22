@@ -8,13 +8,19 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -37,8 +43,12 @@ import butterknife.OnClick;
 import cn.refactor.lib.colordialog.ColorDialog;
 import cn.refactor.lib.colordialog.PromptDialog;
 import wqj.com.oakdesigner.R;
-import wqj.com.oakdesigner.activity.others.TestActivity;
-import wqj.com.oakdesigner.utils.Animation;
+import wqj.com.oakdesigner.activity.adapter.Adapter_blue_process;
+import wqj.com.oakdesigner.activity.adapter.Adapter_decorate_design;
+import wqj.com.oakdesigner.activity.adapter.Adapter_info_center;
+import wqj.com.oakdesigner.activity.bean.BeanBlueProcess;
+import wqj.com.oakdesigner.activity.bean.BeanDecorateDesign;
+import wqj.com.oakdesigner.activity.bean.BeanInfoCenter;
 import wqj.com.oakdesigner.utils.Constant;
 import wqj.com.oakdesigner.utils.FrescoImageLoader;
 import wqj.com.oakdesigner.utils.RequestCode;
@@ -69,20 +79,62 @@ public class MainActivity extends AppCompatActivity {
     SimpleDraweeView imgAd;
     List images = new ArrayList();
     List titles = new ArrayList();
+    List hrefs = new ArrayList();
+    @BindView(R.id.recycler_design)
+    RecyclerView mRecyclerDesign;
+    @BindView(R.id.tv_more)
+    TextView mTvMore;
+    @BindView(R.id.img_more)
+    ImageView mImgMore;
+    @BindView(R.id.tv_more_blue)
+    TextView mTvMoreBlue;
+    @BindView(R.id.img_more_blue)
+    ImageView mImgMoreBlue;
+    @BindView(R.id.recycler_blue)
+    RecyclerView mRecyclerBlue;
+    @BindView(R.id.tv_more_info)
+    TextView mTvMoreInfo;
+    @BindView(R.id.img_more_info)
+    ImageView mImgMoreInfo;
+    @BindView(R.id.recycler_info)
+    RecyclerView mRecyclerInfo;
     private int isFirst = 0;
     private SharedPreferences sharedPreferences;
+    private ImageView imgBook, imgDelete;
+    private FrameLayout mFrameLayout;
+    private List<BeanDecorateDesign> data = new ArrayList<>();
+    private List<BeanBlueProcess> data1 = new ArrayList<>();
+    private List<BeanInfoCenter> data2 = new ArrayList<>();
+    private BeanDecorateDesign mBeanDecorateDesign;
+    private BeanBlueProcess mBeanBlueProcess;
+    private BeanInfoCenter mBeanInfoCenter;
+    private Adapter_decorate_design mAdapterDecorateDesign;
+    private Adapter_blue_process mAdapterBlueProcess;
+    private Adapter_info_center mAdapterInfoCenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager mLayoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager mLayoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerDesign.setLayoutManager(mLayoutManager);
+        mRecyclerBlue.setLayoutManager(mLayoutManager1);
+        mRecyclerInfo.setLayoutManager(mLayoutManager2);
         getBanner();
         initView();
         getPermissions();
+        getDesigndecorate();
+        getBlueProcess();
+        getInfoCenter();
     }
 
     public void getPermissions() {
+        imgBook = (ImageView) findViewById(R.id.img_book);
+        imgDelete = (ImageView) findViewById(R.id.img_delete);
+        mFrameLayout = (FrameLayout) findViewById(R.id.frame);
         sharedPreferences = getSharedPreferences("isFirst", Activity.MODE_PRIVATE);
         isFirst = sharedPreferences.getInt("isFirst", isFirst);
         if (Build.MANUFACTURER.equals("HUAWEI")) {//判断首次登陆并且是华为手机，进行权限授予
@@ -93,13 +145,28 @@ public class MainActivity extends AppCompatActivity {
         } else {
             getPermission();
         }
+        imgBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SubscribeDesignActivity.class);
+                startActivity(intent);
+            }
+        });
+        imgDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFrameLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void bannerOnclick() {
         banner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
-
+                Uri uri = Uri.parse(hrefs.get(position).toString());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
             }
         });
     }
@@ -150,15 +217,15 @@ public class MainActivity extends AppCompatActivity {
         banner.stopAutoPlay();
     }
 
-    @OnClick({R.id.title_back_layout, R.id.img_ad, R.id.title_name_right})
+    @OnClick({R.id.title_back_layout, R.id.img_ad, R.id.title_name_right, R.id.tv_more, R.id.img_more, R.id.tv_more_blue, R.id.img_more_blue, R.id.tv_more_info, R.id.img_more_info})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.title_back_layout:
                 break;
             case R.id.img_ad:
-                Intent intent = new Intent(MainActivity.this, TestActivity.class);
-                startActivity(intent);
-                overridePendingTransition(Animation.abc_slide_in_top, Animation.abc_slide_in_top);
+//                Intent intent = new Intent(MainActivity.this, TestActivity.class);
+//                startActivity(intent);
+//                overridePendingTransition(Animation.abc_slide_in_top, Animation.abc_slide_in_top);
                 break;
             case R.id.title_name_right:
                 ColorDialog colorDialog = new ColorDialog(this);
@@ -181,6 +248,24 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 colorDialog.show();
+                break;
+            case R.id.tv_more:
+                Toast.makeText(MainActivity.this, "点击了装饰设计的更多", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.img_more:
+                Toast.makeText(MainActivity.this, "点击了装饰设计的更多", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tv_more_blue:
+                Toast.makeText(MainActivity.this, "点击了蓝钻工艺的更多", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.img_more_blue:
+                Toast.makeText(MainActivity.this, "点击了蓝钻工艺的更多", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tv_more_info:
+                Toast.makeText(MainActivity.this, "点击了资讯中心的更多", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.img_more_info:
+                Toast.makeText(MainActivity.this, "点击了资讯中心的更多", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -241,8 +326,10 @@ public class MainActivity extends AppCompatActivity {
                                     for (int i = 0; i < legth; i++) {
                                         String url = jsa.getJSONObject(i).getString("url");
                                         String title = jsa.getJSONObject(i).getString("title");
+                                        String href = jsa.getJSONObject(i).getString("href");
                                         images.add(url);
                                         titles.add(title);
+                                        hrefs.add(href);
                                     }
                                 }
                             }
@@ -250,8 +337,155 @@ public class MainActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
                         setBanner();
                         bannerOnclick();
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                    }
+                });
+    }
+
+    public void getDesigndecorate() {
+        OkGo.<String>post(Constant.BaseUrl + "getDesigndecorate")
+                .tag(this)
+                .retryCount(3)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject js = new JSONObject(response.body());
+                            String message = response.message();
+                            Log.w("onSuccess: ", message);
+                            String status = js.getString("status");
+                            Log.w("onSuccess: ", status);
+                            if (message.equals("OK") && status.equals("1")) {
+                                JSONArray jsa = js.getJSONArray("data");
+                                int legth = jsa.length();
+                                if (legth > 0) {
+                                    for (int i = 0; i < legth; i++) {
+                                        String url = jsa.getJSONObject(i).getString("url");
+                                        String title = jsa.getJSONObject(i).getString("title");
+                                        String href = jsa.getJSONObject(i).getString("img");
+                                        mBeanDecorateDesign = new BeanDecorateDesign(href, title);
+                                        data.add(mBeanDecorateDesign);
+                                    }
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Constant.mContext = MainActivity.this;
+                        mAdapterDecorateDesign = new Adapter_decorate_design(R.layout.item_design_decorate, data);
+                        mRecyclerDesign.setAdapter(mAdapterDecorateDesign);
+                        mAdapterDecorateDesign.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                Toast.makeText(MainActivity.this, "onItemClick" + position, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                    }
+                });
+    }
+
+    public void getBlueProcess() {
+        OkGo.<String>post(Constant.BaseUrl + "getBlueProcess")
+                .tag(this)
+                .retryCount(3)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject js = new JSONObject(response.body());
+                            String message = response.message();
+                            Log.w("onSuccess: ", message);
+                            String status = js.getString("status");
+                            Log.w("onSuccess: ", status);
+                            if (message.equals("OK") && status.equals("1")) {
+                                JSONArray jsa = js.getJSONArray("data");
+                                int legth = jsa.length();
+                                if (legth > 0) {
+                                    for (int i = 0; i < legth; i++) {
+                                        String url = jsa.getJSONObject(i).getString("url");
+                                        String title = jsa.getJSONObject(i).getString("title");
+                                        String href = jsa.getJSONObject(i).getString("img");
+                                        mBeanBlueProcess = new BeanBlueProcess(href, title);
+                                        data1.add(mBeanBlueProcess);
+                                    }
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.w("onSuccess: ", String.valueOf(data1.size()));
+                        Constant.mContext = MainActivity.this;
+                        mAdapterBlueProcess = new Adapter_blue_process(R.layout.item_blue_process, data1);
+                        mRecyclerBlue.setAdapter(mAdapterBlueProcess);
+                        mAdapterBlueProcess.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                Toast.makeText(MainActivity.this, "onItemClick" + position, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                    }
+                });
+    }
+
+    public void getInfoCenter() {
+        OkGo.<String>post(Constant.BaseUrl + "getInfoCenter")
+                .tag(this)
+                .retryCount(3)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        try {
+                            JSONObject js = new JSONObject(response.body());
+
+                            String message = response.message();
+                            Log.w("onSuccess: ", message);
+                            String status = js.getString("status");
+                            Log.w("onSuccess: ", status);
+                            if (message.equals("OK") && status.equals("1")) {
+                                JSONArray jsa = js.getJSONArray("data");
+                                int legth = jsa.length();
+                                if (legth > 0) {
+                                    for (int i = 0; i < legth; i++) {
+                                        String url = jsa.getJSONObject(i).getString("url");
+                                        String title = jsa.getJSONObject(i).getString("title");
+                                        String href = jsa.getJSONObject(i).getString("img");
+                                        mBeanInfoCenter = new BeanInfoCenter(href, title);
+                                        data2.add(mBeanInfoCenter);
+                                    }
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Constant.mContext = MainActivity.this;
+                        mAdapterInfoCenter = new Adapter_info_center(R.layout.item_info_center, data2);
+                        mRecyclerInfo.setAdapter(mAdapterInfoCenter);
+                        mAdapterInfoCenter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                Toast.makeText(MainActivity.this, "onItemClick" + position, Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                     @Override
@@ -267,7 +501,7 @@ public class MainActivity extends AppCompatActivity {
      * @author lance
      */
     private class PhoneCallListener extends PhoneStateListener {
-        private final String LOG_TAG = "test";
+        private final String LOG_TAG = "PhoneCallListener";
         private boolean isPhoneCalling = false;
 
         public void onCallStateChanged(int state, String incomingNumber) {
@@ -289,7 +523,6 @@ public class MainActivity extends AppCompatActivity {
                             .getPackageManager()
                             .getLaunchIntentForPackage(getBaseContext().getPackageName())
                             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
                     startActivity(intent);
                     isPhoneCalling = false;
                 }

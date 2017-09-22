@@ -8,4 +8,6 @@
     <dimen name="dp60">60dp</dimen>
     <dimen name="sp28">28sp</dimen>
     <dimen name="dp6">6dp</dimen>
+    <dimen name="dp_10">10dp</dimen>
+
 </resources>
