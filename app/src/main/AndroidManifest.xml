@@ -31,6 +31,8 @@
         </activity>
         <activity android:name=".forum.ForumActivity">
         </activity>
+        <activity android:name=".activity.main.DetailsWebViewActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -15,10 +15,17 @@ import java.io.Serializable;
 public class BeanBlueProcess implements Serializable {
     private String img;
     private String title;
+    private String url;
 
     public BeanBlueProcess(String img, String title) {
         this.img = img;
         this.title = title;
+    }
+
+    public BeanBlueProcess(String img, String title, String url) {
+        this.img = img;
+        this.title = title;
+        this.url = url;
     }
 
     public String getImg() {
@@ -35,5 +42,13 @@ public class BeanBlueProcess implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

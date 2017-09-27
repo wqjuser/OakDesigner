@@ -98,6 +98,14 @@ public class MainActivity extends AppCompatActivity {
     ImageView mImgMoreInfo;
     @BindView(R.id.recycler_info)
     RecyclerView mRecyclerInfo;
+    @BindView(R.id.layout_back)
+    LinearLayout mLayoutBack;
+    @BindView(R.id.img_delete)
+    ImageView mImgDelete;
+    @BindView(R.id.frame)
+    FrameLayout mFrame;
+    @BindView(R.id.img_book)
+    ImageView mImgBook;
     private int isFirst = 0;
     private SharedPreferences sharedPreferences;
     private ImageView imgBook, imgDelete;
@@ -175,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
         StatusBarCompat.compat(this, R.color.grayctitlecolor);
         titleNameTv.setText(R.string.app_name);
         titleNameRight.setBackgroundResource(R.drawable.ic_call_black_24dp);
+        mLayoutBack.setVisibility(View.INVISIBLE);
         //add call state listener
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(MainActivity.TELEPHONY_SERVICE);
         PhoneCallListener phoneCallListener = new PhoneCallListener();
@@ -316,9 +325,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONObject js = new JSONObject(response.body());
                             String message = response.message();
-                            Log.w("onSuccess: ", message);
                             String status = js.getString("status");
-                            Log.w("onSuccess: ", status);
                             if (message.equals("OK") && status.equals("1")) {
                                 JSONArray jsa = js.getJSONArray("data");
                                 int legth = jsa.length();
@@ -359,9 +366,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONObject js = new JSONObject(response.body());
                             String message = response.message();
-                            Log.w("onSuccess: ", message);
                             String status = js.getString("status");
-                            Log.w("onSuccess: ", status);
                             if (message.equals("OK") && status.equals("1")) {
                                 JSONArray jsa = js.getJSONArray("data");
                                 int legth = jsa.length();
@@ -370,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
                                         String url = jsa.getJSONObject(i).getString("url");
                                         String title = jsa.getJSONObject(i).getString("title");
                                         String href = jsa.getJSONObject(i).getString("img");
-                                        mBeanDecorateDesign = new BeanDecorateDesign(href, title);
+                                        mBeanDecorateDesign = new BeanDecorateDesign(href, title, url);
                                         data.add(mBeanDecorateDesign);
                                     }
                                 }
@@ -385,7 +390,10 @@ public class MainActivity extends AppCompatActivity {
                         mAdapterDecorateDesign.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                                Toast.makeText(MainActivity.this, "onItemClick" + position, Toast.LENGTH_SHORT).show();
+                                String url1 = data.get(position).getUrl();
+                                Intent intent = new Intent(MainActivity.this, DetailsWebViewActivity.class);
+                                intent.putExtra("url", url1);
+                                startActivity(intent);
                             }
                         });
                     }
@@ -407,9 +415,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONObject js = new JSONObject(response.body());
                             String message = response.message();
-                            Log.w("onSuccess: ", message);
                             String status = js.getString("status");
-                            Log.w("onSuccess: ", status);
                             if (message.equals("OK") && status.equals("1")) {
                                 JSONArray jsa = js.getJSONArray("data");
                                 int legth = jsa.length();
@@ -418,7 +424,7 @@ public class MainActivity extends AppCompatActivity {
                                         String url = jsa.getJSONObject(i).getString("url");
                                         String title = jsa.getJSONObject(i).getString("title");
                                         String href = jsa.getJSONObject(i).getString("img");
-                                        mBeanBlueProcess = new BeanBlueProcess(href, title);
+                                        mBeanBlueProcess = new BeanBlueProcess(href, title, url);
                                         data1.add(mBeanBlueProcess);
                                     }
                                 }
@@ -427,14 +433,16 @@ public class MainActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Log.w("onSuccess: ", String.valueOf(data1.size()));
                         Constant.mContext = MainActivity.this;
                         mAdapterBlueProcess = new Adapter_blue_process(R.layout.item_blue_process, data1);
                         mRecyclerBlue.setAdapter(mAdapterBlueProcess);
                         mAdapterBlueProcess.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                                Toast.makeText(MainActivity.this, "onItemClick" + position, Toast.LENGTH_SHORT).show();
+                                String url1 = data1.get(position).getUrl();
+                                Intent intent = new Intent(MainActivity.this, DetailsWebViewActivity.class);
+                                intent.putExtra("url", url1);
+                                startActivity(intent);
                             }
                         });
                     }
@@ -455,11 +463,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onSuccess(Response<String> response) {
                         try {
                             JSONObject js = new JSONObject(response.body());
-
                             String message = response.message();
-                            Log.w("onSuccess: ", message);
                             String status = js.getString("status");
-                            Log.w("onSuccess: ", status);
                             if (message.equals("OK") && status.equals("1")) {
                                 JSONArray jsa = js.getJSONArray("data");
                                 int legth = jsa.length();
@@ -468,7 +473,7 @@ public class MainActivity extends AppCompatActivity {
                                         String url = jsa.getJSONObject(i).getString("url");
                                         String title = jsa.getJSONObject(i).getString("title");
                                         String href = jsa.getJSONObject(i).getString("img");
-                                        mBeanInfoCenter = new BeanInfoCenter(href, title);
+                                        mBeanInfoCenter = new BeanInfoCenter(href, title, url);
                                         data2.add(mBeanInfoCenter);
                                     }
                                 }
@@ -483,7 +488,10 @@ public class MainActivity extends AppCompatActivity {
                         mAdapterInfoCenter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                                Toast.makeText(MainActivity.this, "onItemClick" + position, Toast.LENGTH_SHORT).show();
+                                String url1 = data2.get(position).getUrl();
+                                Intent intent = new Intent(MainActivity.this, DetailsWebViewActivity.class);
+                                intent.putExtra("url", url1);
+                                startActivity(intent);
                             }
                         });
                     }

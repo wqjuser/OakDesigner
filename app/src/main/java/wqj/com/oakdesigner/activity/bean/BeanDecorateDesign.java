@@ -15,10 +15,17 @@ import java.io.Serializable;
 public class BeanDecorateDesign implements Serializable {
     private String img;
     private String title;
+    private String url;
 
     public BeanDecorateDesign(String img, String title) {
         this.img = img;
         this.title = title;
+    }
+
+    public BeanDecorateDesign(String img, String title, String url) {
+        this.img = img;
+        this.title = title;
+        this.url = url;
     }
 
     public String getImg() {
@@ -35,5 +42,13 @@ public class BeanDecorateDesign implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
